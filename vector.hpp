@@ -42,11 +42,184 @@ namespace ft
 		typedef typename std::random_access_iterator_tag iterator_category;
     };
 
-    template < class T >
-    class MyIterator : public std::iterator<std::random_access_iterator_tag, typename iterator_traits<T>::value_type>
-    {
-        public:
+    template <class Iterator>
+	class reverse_iterator
+	{
+	public:
+		typedef Iterator iterator_type;
+		typedef typename iterator_traits<Iterator>::iterator_category iterator_category;
+		typedef typename iterator_traits<Iterator>::value_type value_type;
+		typedef typename iterator_traits<Iterator>::difference_type difference_type;
+		typedef typename iterator_traits<Iterator>::pointer pointer;
+		typedef typename iterator_traits<Iterator>::reference reference;
 
+	private:
+		iterator_type it;
+
+	public:
+		reverse_iterator() : it(nullptr){}
+		explicit reverse_iterator(iterator_type it) { this->it = it; }
+
+		template <class Iter>
+		reverse_iterator(const reverse_iterator<Iter> &rev_it) : it(rev_it.base()){};
+
+		iterator_type base() const
+		{
+			return (it);
+		}
+
+		reference operator*() const
+		{
+			iterator_type _tmp = it;
+			return *--_tmp;
+		}
+
+		reverse_iterator operator+(difference_type n) const
+		{
+			return reverse_iterator(base() - n);
+		}
+
+		reverse_iterator &operator++()
+		{
+			it--;
+			return *this;
+		}
+
+		reverse_iterator operator++(int)
+		{
+			reverse_iterator temp = *this;
+			++(*this);
+			return temp;
+		}
+
+		reverse_iterator& operator+= (difference_type n)
+		{
+			it -= n;
+			return *this;
+		}
+
+		reverse_iterator operator-(difference_type n) const
+		{
+			return reverse_iterator(base() + n);
+		}
+
+		reverse_iterator &operator--()
+		{
+			++it;
+			return (*this);
+		}
+
+		reverse_iterator operator--(int)
+		{
+			reverse_iterator temp = *this;
+			--(*this);
+			return temp;
+		}
+
+		reverse_iterator &operator-=(difference_type n)
+		{
+			it += n;
+			return *this;
+		}
+
+		bool operator!=(const reverse_iterator &other)
+		{
+			return (this->it != other.it);
+		}
+
+		reference operator[](difference_type n) const
+		{
+			return *(*this + n);
+		}
+	};
+    template < class T >
+    class MyIterator : public std::iterator<std::random_access_iterator_tag, T>
+    {
+    public:
+		typedef T pointer;
+		typedef typename iterator_traits<pointer>::iterator_category iterator_category;
+		typedef typename iterator_traits<pointer>::value_type value_type;
+		typedef typename iterator_traits<pointer>::difference_type difference_type;
+		typedef typename iterator_traits<pointer>::reference reference;
+	private:
+		pointer iter;
+	public:
+        MyIterator() : iter(nullptr) {}
+		MyIterator(pointer it) : iter(it) {}                                    
+        pointer base() const
+		{
+			return (iter);
+		}
+
+		reference operator*()
+		{
+			return (*iter);
+		}
+
+		MyIterator &operator++()
+		{
+			++iter;
+			return (*this);
+		}
+
+		MyIterator operator+(ptrdiff_t n)
+		{
+			iter += n;
+			return (*this);
+		}
+
+		MyIterator operator++(int)
+		{
+			MyIterator tmp(*this);
+			operator++();
+			return (tmp);
+		}
+
+		MyIterator operator+=(ptrdiff_t n)
+		{
+			iter += n;
+			return (*this);
+		}
+
+		MyIterator &operator-(ptrdiff_t n)
+		{
+			iter -= n;
+			return (*this);
+		}
+
+		MyIterator operator--()
+		{
+			iter--;
+			return iter;
+		}
+
+		MyIterator operator--(int)
+		{
+			MyIterator tmp(*this);
+			operator--();
+			return tmp;
+		}
+
+		MyIterator operator-=(ptrdiff_t n)
+		{
+			iter -= n;
+			return (*this);
+		}
+
+		reference operator[](ptrdiff_t n)
+		{
+			return (iter[n]);
+		}
+
+		bool operator==(const MyIterator &rhs) const
+		{
+			return (iter == rhs.iter);
+		}
+
+		bool operator!=(const MyIterator &rhs) const
+		{
+			return (this->iter != rhs.iter);
+		}
     };
     template < class T, class Alloc = std::allocator<T> >
     class vector
@@ -59,6 +232,10 @@ namespace ft
         typedef typename allocator_type::pointer pointer;
         typedef typename allocator_type::const_pointer const_pointer;
         typedef size_t size_type;
+        typedef ft::MyIterator<pointer> iterator;
+		typedef ft::MyIterator<const_pointer> const_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
     private:
        allocator_type _alloc;
        value_type *_arr;
@@ -72,7 +249,7 @@ namespace ft
 		vector(size_type n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type()) : _alloc(alloc), _arr(nullptr), _size(n), _capacity(n)
 		{
 			_arr = _alloc.allocate(n);
-			for (unsigned long i = 0; i < n; i++)
+			for (size_type i = 0; i < n; i++)
 				_arr[i] = val;
 		}
         void push_back (const value_type& val)
@@ -155,6 +332,73 @@ namespace ft
         {
             return (this->_arr[this->_size - 1]);
         }
+
+        iterator begin()
+        {
+            return (iterator(&_arr[0]));
+        }
+        const_iterator begin() const
+        {
+            return (const_iterator(&_arr[0]));
+        }
+        iterator end()
+        {
+            return (iterator(&_arr[_size]));
+        }
+        const_iterator end() const
+        {
+            return(const_iterator(_arr[&_size]));
+        }
+        reverse_iterator rbegin()
+        {
+            return(reverse_iterator(iterator(&_arr[_size])));
+        }
+        const_reverse_iterator rbegin() const
+        {
+            return (const_iterator(&_arr[_size]));
+        }
+        reverse_iterator rend()
+        {
+            return (iterator(&_arr[0]));
+        }
+        const_reverse_iterator rend() const
+        {
+            return (const_iterator(&_arr[0]));
+        }
+		bool empty() const
+		{
+			if (_size == 0)
+				return 1;
+			return 0;
+		}
+		void swap (vector& x)
+		{
+       		allocator_type _alloc_tmp = _alloc;
+       		value_type *_arr_tmp = _arr;
+       		size_type _size_tmp = _size;
+       		size_type _capacity_tmp = _capacity;
+			
+			_alloc = x._alloc;
+			_arr = x._arr;
+			_size = x._size;
+			_capacity = x._capacity;
+
+			x._alloc = _alloc_tmp;
+			x._arr = _arr_tmp;
+			x._size = _size_tmp;
+			x._capacity = _capacity_tmp;
+		}
+		void clear()
+		{
+			for (size_t i = 0; i < _capacity; i++)
+			{
+				_alloc.destroy(&_arr[i]);
+				_size--;
+			}
+		}
+		template <class InputIterator>
+  		void assign (InputIterator first, InputIterator last);
+		void assign (size_type n, const value_type& val);
     };
 }
 
