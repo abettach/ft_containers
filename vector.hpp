@@ -211,14 +211,14 @@ namespace ft
 			return (iter[n]);
 		}
 
-		bool operator==(const MyIterator &rhs) const
+		bool operator==(const MyIterator &other) const
 		{
-			return (iter == rhs.iter);
+			return (iter == other.iter);
 		}
 
-		bool operator!=(const MyIterator &rhs) const
+		bool operator!=(const MyIterator &other) const
 		{
-			return (this->iter != rhs.iter);
+			return (this->iter != other.iter);
 		}
     };
     template < class T, class Alloc = std::allocator<T> >
@@ -274,21 +274,21 @@ namespace ft
         }
         void resize (size_type n, value_type val = value_type())
         {
-            T *new_arr;
-            if (n > this->_capacity)
-            {
-                _capacity *= 2;
-                _capacity = _capacity == 0 ? 1 : _capacity;
-                _capacity = n > _capacity ? n : _capacity;
-            }
-            _size = _size > n ? n : _size;
-            new_arr = _alloc.allocate(_capacity);
-            for (size_t i = 0; i < _size; i++)
-                new_arr[i] = _arr[i];
-            while (_size++ < n)
-                new_arr[_size] = val;
-            delete[] _arr;
-            _arr = new_arr;
+			T *new_arr;
+			if (n > _capacity)
+			{
+				_capacity *= 2;
+				_capacity = _capacity == 0 ? 1 : _capacity;
+				_capacity = n > _capacity ? n : _capacity;
+			}
+			_size = _size > n ? n : _size;
+			new_arr = _alloc.allocate(_capacity);
+			for (size_t i = 0; i < _size; i++)
+				new_arr[i] = _arr[i];
+			for (; _size < n; _size++)
+				new_arr[_size] = val;
+			delete[] _arr;
+			_arr = new_arr;
         }
         size_type max_size() const
         {
@@ -391,15 +391,141 @@ namespace ft
 		void clear()
 		{
 			for (size_t i = 0; i < _capacity; i++)
-			{
 				_alloc.destroy(&_arr[i]);
-				_size--;
+				_size = 0;
+		}
+		template <class InputIterator>
+		size_t	InputIteratorLen(InputIterator first, InputIterator last)
+		{
+			size_t i = 0;
+			while (first != last)
+			{
+				i++;
+				first++;
+			}
+			return i;
+		}
+
+		template <class InputIterator>
+  		void assign (InputIterator first, InputIterator last)
+
+		{
+			size_t len = 0;
+
+			len = InputIteratorLen(first, last);
+			if (len > 0)
+			{
+				if (len > _capacity)
+					resize(len);
+				_size = 0;
+				while (first != last)
+				{
+					_arr[_size] = *first;
+					_size++;
+					first++;
+				}
+			}
+		}
+		
+		void assign(size_type n, const value_type &val)
+		{
+			if (n > 0)
+			{
+				if (n > _capacity)
+					resize(n);
+				_size = 0;
+				for (size_type i = 0; i < n; i++)
+					_arr[_size++] = val;
+			}
+		}
+		iterator erase(iterator position)
+		{
+			size_t i = 0;
+			iterator it = this->begin();
+			for (;it != position; it++)
+				i++;
+			_alloc.destroy(&_arr[i]);
+			for (;i < _size - 1; i++)
+			{
+				value_type tmp = _arr[i];
+				_arr[i] = _arr[i + 1];
+			}
+			_size--;
+			return (it);
+		}
+
+		iterator erase(iterator first, iterator last)
+		{
+			iterator it;
+			int i = 0;
+			int n = InputIteratorLen(first, last);
+
+			while (i != n)
+			{
+				erase(first);
+				i++;
+			}
+			return it;
+		}
+
+		iterator insert(iterator position, const value_type &val)
+		{
+			value_type tmp;
+			value_type tmp2;
+			iterator it;
+			iterator ite;
+			size_t i = 0;
+			tmp = *position;
+			it = this->begin();
+
+			for (;it != position;it++)
+				i++;
+			if (_size == _capacity)
+				resize(_capacity);
+			it = iterator(_arr + i);
+			_size++;
+			_arr[i++] = val;
+			while (i < _size)
+			{
+				tmp2 = _arr[i];
+				_arr[i++] = tmp;
+				tmp = _arr[i];
+				_arr[i++] = tmp2;
+			}
+			return (it);
+		}
+
+		void insert(iterator position, size_type n, const value_type &val)
+		{
+			size_type i = 0;
+			for (;i < n;i++)
+			{
+				position = insert(position, val);
+				position++;
 			}
 		}
 		template <class InputIterator>
-  		void assign (InputIterator first, InputIterator last);
-		void assign (size_type n, const value_type& val);
+		void insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type * = nullptr)
+		{
+			T val;
+			while (first != last)
+			{
+				val = *first;
+				position = insert(position, val);
+				position++;
+				first++;
+			}
+		}
+		vector &operator=(const vector &other)
+		{
+			_alloc = other._alloc;
+			_arr = other._arr;
+			_size = other._size;
+			_capacity = other._capacity;
+			return (*this);
+		}
+		~vector(){};
     };
 }
-
+ 
 #endif
