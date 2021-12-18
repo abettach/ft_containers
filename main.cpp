@@ -1,27 +1,21 @@
-#include "vector.hpp"
+#include "vector/vector.hpp"
+#include "stack/stack.hpp"
 #include <iostream>
 // #include <vector>
 // #include <string>
 int main()
 {
-    ft::vector<int> first;
-    ft::vector<int> sec (10, 5);
-	// ft::MyIterator<int> it = *sec.begin();
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(1);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(2);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(3);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(4);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(5);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.erase(first.begin() + 3);
-	// std::cout << *it << std::endl;
-    for (size_t i = 0; i < first.size(); i++)
-        std::cout << first[i] << std::endl;
+    // ft::vector<int> vec;
+    ft::stack<int> test;
+
+    test.push(5);
+    // test.push(6);
+    // test.push(7);
+
+    // std::cout << vec[0] << std::endl;
+    std::cout << test.top() << std::endl;
+
+    
     return 0;
 
 }

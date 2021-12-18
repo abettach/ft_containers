@@ -1,24 +1,21 @@
 #include <iostream>
 #include <vector>
+#include <stack>
+
 int     main()
 {
-    std::vector<int> first;
-    std::vector<int> sec (10, 5);
-	// ft::MyIterator<int> it = *sec.begin();
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(1);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(2);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(3);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(4);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    first.push_back(5);
-	std::cout << "size = " << first.size() << ", capacity = " << first.capacity() << std::endl;
-    // first.erase(first.begin() + 3);
-	// std::cout << *it << std::endl;
-    for (size_t i = 0; i < first.size(); i++)
-        std::cout << first[0] << std::endl;
+    // std::vector<int> first (3,5);
+    std::stack<int> test(5);
+
+    test.push(5);
+    test.push(6);
+    test.push(8);
+    test.push(7);
+
+    while(!(test.empty()))
+    {
+        std::cout << test.top() << std::endl;
+        test.pop();
+    }
     return 0;
 }
