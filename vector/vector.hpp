@@ -312,5 +312,5 @@ namespace ft
 		~vector(){};
     };
 }
- 
+
 #endif
