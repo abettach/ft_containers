@@ -1,21 +1,17 @@
-#include "vector/vector.hpp"
-#include "stack/stack.hpp"
+// #include "vector/vector.hpp"
+// #include "stack/stack.hpp"
 #include <iostream>
+#include "pair.hpp"
+#include <map>
 // #include <vector>
 // #include <string>
 int main()
 {
-    // ft::vector<int> vec;
-    ft::stack<int> test;
+    ft::pair<int ,int> pt(5, 6);
+    ft::pair<int, int> st(5, 6);
+    bool a = (st == pt);
+    std::cout << a << std::endl;
 
-    test.push(5);
-    // test.push(6);
-    // test.push(7);
-
-    // std::cout << vec[0] << std::endl;
-    std::cout << test.top() << std::endl;
-
-    
     return 0;
 
 }
