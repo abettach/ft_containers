@@ -446,5 +446,3 @@ namespace ft
 };
 
 #endif
-
-git config --global user.name "Your Name"
