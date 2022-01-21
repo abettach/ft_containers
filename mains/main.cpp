@@ -1,10 +1,9 @@
 #include "main.hpp"
 
-int     main(int ac, char **av)
+int     main()
 {
-    // original_test(ac, av);
-    vector_test();
-    stack_test();
+    // vector_test();
+    // stack_test();
     map_test();
     return 0;
 }

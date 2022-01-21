@@ -112,7 +112,7 @@ namespace ft
 		{
 			return this->_tree;
 		}
-
+ 
 		pair &operator*() const
 		{
 			return (_tree)->pair;
@@ -211,33 +211,33 @@ namespace ft
 		{
 			friend class map;
 
-		protected:
-			key_compare _comp;
-			explicit MapKeyCompare(key_compare comp) : _comp(comp) {}
+			protected:
+				key_compare _comp;
+				explicit MapKeyCompare(key_compare comp) : _comp(comp) {}
 
-		public:
-			MapKeyCompare(){};
-			virtual ~MapKeyCompare() {}
+			public:
+				MapKeyCompare(){};
+				virtual ~MapKeyCompare() {}
 
-			bool operator()(const value_type &a, const value_type &b) const
-			{
-				return (_comp(a.first, b.first));
-			}
+				bool operator()(const value_type &a, const value_type &b) const
+				{
+					return (_comp(a.first, b.first));
+				}
 
-			bool operator()(const value_type &a, const key_type &b) const
-			{
-				return (_comp(a.first, b));
-			}
+				bool operator()(const value_type &a, const key_type &b) const
+				{
+					return (_comp(a.first, b));
+				}
 
-			bool operator()(const key_type &a, const value_type &b) const
-			{
-				return (_comp(a, b.first));
-			}
+				bool operator()(const key_type &a, const value_type &b) const
+				{
+					return (_comp(a, b.first));
+				}
 
-			bool operator()(const key_type &a, const key_type &b) const
-			{
-				return (_comp(a, b));
-			}
+				bool operator()(const key_type &a, const key_type &b) const
+				{
+					return (_comp(a, b));
+				}
 		};
 
 	public:
@@ -350,7 +350,6 @@ namespace ft
 
 			if (exist)
 				return iterator(ret);
-
 			return end();
 		}
 

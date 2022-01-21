@@ -18,15 +18,12 @@ void    print_map()
 
 bool fncomp(char lhs, char rhs)
 {
-  return lhs < rhs;
+    return lhs < rhs;
 }
 
 struct classcomp
 {
-  bool operator()(const char &lhs, const char &rhs) const
-  {
-    return lhs < rhs;
-  }
+    bool operator()(const char &lhs, const char &rhs) const { return lhs < rhs; }
 };
 
 void     map_test()
@@ -44,9 +41,6 @@ void     map_test()
         ft::map<char, int>::iterator it;  
         it = third.begin();
         std::cout << it->first << std::endl;
-        ft::map<char, int, classcomp> fourth; // class as Compare 
-        bool (*fn_pt)(char, char) = fncomp;
-        ft::map<char, int, bool (*)(char, char)> fifth(fn_pt); // function pointer as Compare
     }   
     {
         ft::map<char, int> mymap; 
@@ -55,7 +49,7 @@ void     map_test()
         mymap['c'] = 300; 
         // show content:
         for (ft::map<char, int>::iterator it = mymap.begin(); it != mymap.end(); ++it)
-            std::cout << it->first << " => " << it->second << '\n';
+            std::cout << it->first << " -> " << it->second << '\n';
     }   
     {
         ft::map<char, int> mymap; 
@@ -65,7 +59,7 @@ void     map_test()
         // show content:
         ft::map<char, int>::reverse_iterator rit;
         for (rit = mymap.rbegin(); rit != mymap.rend(); ++rit)
-            std::cout << rit->first << " => " << rit->second << '\n';
+            std::cout << rit->first << " -> " << rit->second << '\n';
     }   
     {
         ft::map<char, int> mymap; 
@@ -139,7 +133,6 @@ void     map_test()
         // third insert function version (range insertion):
         ft::map<char, int> anothermap;
         anothermap.insert(mymap.begin(), mymap.find('c'));    
-        // showing contents:
         std::cout << "mymap contains:\n";
         for (it = mymap.begin(); it != mymap.end(); ++it)
             std::cout << it->first << " => " << it->second << '\n'; 
@@ -161,11 +154,10 @@ void     map_test()
         mymap['e'] = 50;
         mymap['f'] = 60;  
         it = mymap.find('b');
-        mymap.erase(it); // erasing by iterator   
-        mymap.erase('c'); // erasing by key   
+        mymap.erase(it);
+        mymap.erase('c');
         it = mymap.find('e');
         mymap.erase(it, mymap.end()); // erasing by range 
-        // show content:
         for (it = mymap.begin(); it != mymap.end(); ++it)
             std::cout << it->first << " => " << it->second << '\n';
         std::cout << std::endl;

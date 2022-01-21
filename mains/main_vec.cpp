@@ -223,7 +223,7 @@ void vector_test()
       third.assign(myints, myints + 3); // assigning from array.    
       std::cout << "Size of first: " << int(first.size()) << '\n';
       std::cout << "Size of second: " << int(second.size()) << '\n';
-      std::cout << "Size of third: " << int(third.size()) << '\n'<< std::endl;;
+      std::cout << "Size of third: " << int(third.size()) << '\n'<< std::endl;
     }   
     // PUSH_BACK
     std::cout << "\e[1;31mPush_back Test:\e[1;37m" << std::endl;

@@ -14,12 +14,10 @@
 	#include "../stack/stack.hpp"
 	#include "../vector/vector.hpp"
 #endif
-#include <stdlib.h>
 #define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096
 
 void original_test(int argc, char** argv);
-
 void vector_test();
 void   stack_test();
 void     map_test();

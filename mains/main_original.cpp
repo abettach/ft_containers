@@ -52,7 +52,7 @@ void original_test(int argc, char** argv)
 		std::cerr << "Usage: ./test seed" << std::endl;
 		std::cerr << "Provide a seed please" << std::endl;
 		std::cerr << "Count value:" << COUNT << std::endl;
-		return 1;
+		exit(1);
 	}
 	const int seed = atoi(argv[1]);
 	srand(seed);
@@ -102,7 +102,6 @@ void original_test(int argc, char** argv)
 		sum += map_int[access];
 	}
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
-
 	{
 		ft::map<int, int> copy = map_int;
 	}
@@ -114,5 +113,4 @@ void original_test(int argc, char** argv)
 		std::cout << *it;
 	}
 	std::cout << std::endl;
-	return (0);
 }
